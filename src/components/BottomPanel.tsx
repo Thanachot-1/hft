@@ -14,9 +14,9 @@ export function BottomPanel() {
   // Simulate random PnL events for gamification
   useEffect(() => {
     const interval = setInterval(() => {
-      if (Math.random() > 0.7) {
-        const isProfit = Math.random() > 0.4;
-        const amount = Math.floor(Math.random() * 500) + 10;
+      if (Math.random() > 0.4) { // Higher chance to trigger for HFT
+        const isProfit = Math.random() > 0.3; // Bias towards profit for dopamine
+        const amount = Math.floor(Math.random() * 200) + 5; // Smaller, faster scalps
         const newEvent = { id: Date.now(), amount, isProfit };
         
         setPnlEvents(prev => [...prev, newEvent]);
@@ -24,9 +24,9 @@ export function BottomPanel() {
         // Remove event after animation
         setTimeout(() => {
           setPnlEvents(prev => prev.filter(e => e.id !== newEvent.id));
-        }, 2000);
+        }, 1500);
       }
-    }, 5000);
+    }, 1200); // Trigger every 1.2 seconds
     
     return () => clearInterval(interval);
   }, []);

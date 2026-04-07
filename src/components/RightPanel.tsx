@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import { PanelHeader, PanelContent } from './layout/TerminalGrid';
 import { mockPortfolio } from '@/lib/mockData';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { Settings, ShieldAlert, Key } from 'lucide-react';
+import { Settings, ShieldAlert, Key, Wallet, ExternalLink } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-export function RightPanel() {
+interface RightPanelProps {
+  isConnected?: boolean;
+  setIsConnected?: (val: boolean) => void;
+}
+
+export function RightPanel({ isConnected = false, setIsConnected }: RightPanelProps) {
   const [capital, setCapital] = useState('100000');
   const [risk, setRisk] = useState('2.0');
   const [alpacaKey, setAlpacaKey] = useState('');
@@ -20,7 +26,7 @@ export function RightPanel() {
       </PanelHeader>
       
       <PanelContent className="flex flex-col gap-6">
-        {/* API Config */}
+        {/* API Config / Sign-In */}
         <div className="flex flex-col gap-4">
           <h3 className="text-xs font-semibold text-terminal-muted uppercase tracking-wider flex items-center gap-2">
             <Key size={14} />
@@ -34,7 +40,8 @@ export function RightPanel() {
               value={alpacaKey}
               onChange={(e) => setAlpacaKey(e.target.value)}
               placeholder="PK..."
-              className="w-full bg-terminal-bg border border-terminal-border rounded px-3 py-2 text-sm font-mono text-terminal-text focus:outline-none focus:border-terminal-green transition-colors"
+              disabled={isConnected}
+              className="w-full bg-terminal-bg border border-terminal-border rounded px-3 py-2 text-sm font-mono text-terminal-text focus:outline-none focus:border-terminal-green transition-colors disabled:opacity-50"
             />
           </div>
 
@@ -45,9 +52,53 @@ export function RightPanel() {
               value={alpacaSecret}
               onChange={(e) => setAlpacaSecret(e.target.value)}
               placeholder="SK..."
-              className="w-full bg-terminal-bg border border-terminal-border rounded px-3 py-2 text-sm font-mono text-terminal-text focus:outline-none focus:border-terminal-green transition-colors"
+              disabled={isConnected}
+              className="w-full bg-terminal-bg border border-terminal-border rounded px-3 py-2 text-sm font-mono text-terminal-text focus:outline-none focus:border-terminal-green transition-colors disabled:opacity-50"
             />
           </div>
+
+          <button 
+            onClick={() => setIsConnected?.(!isConnected)}
+            className={cn(
+              "w-full py-2 rounded font-mono text-xs font-bold transition-colors uppercase tracking-wider mt-1",
+              isConnected 
+                ? "bg-terminal-border text-terminal-text hover:bg-terminal-border/80" 
+                : "bg-terminal-green text-terminal-bg hover:bg-terminal-green/90"
+            )}
+          >
+            {isConnected ? "Disconnect Broker" : "Connect to Alpaca"}
+          </button>
+        </div>
+
+        <div className="h-px bg-terminal-border w-full" />
+
+        {/* Account Overview */}
+        <div className="flex flex-col gap-4">
+          <h3 className="text-xs font-semibold text-terminal-muted uppercase tracking-wider flex items-center gap-2">
+            <Wallet size={14} />
+            Account Overview
+          </h3>
+          
+          <div className="grid grid-cols-2 gap-2">
+            <div className="bg-terminal-bg border border-terminal-border rounded p-3 flex flex-col gap-1">
+              <span className="text-[10px] text-terminal-muted font-mono uppercase">Total Equity</span>
+              <span className="text-sm font-mono font-bold text-terminal-text">$125,000.00</span>
+            </div>
+            <div className="bg-terminal-bg border border-terminal-border rounded p-3 flex flex-col gap-1">
+              <span className="text-[10px] text-terminal-muted font-mono uppercase">Buying Power</span>
+              <span className="text-sm font-mono font-bold text-terminal-green">$80,000.00</span>
+            </div>
+          </div>
+
+          <a 
+            href="https://app.alpaca.markets/brokerage/dashboard/overview" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="w-full py-2 bg-terminal-bg hover:bg-terminal-border/50 text-terminal-text border border-terminal-border rounded font-mono text-xs font-bold transition-colors uppercase tracking-wider flex items-center justify-center gap-2"
+          >
+            Manage Funds / Withdraw
+            <ExternalLink size={14} />
+          </a>
         </div>
 
         <div className="h-px bg-terminal-border w-full" />

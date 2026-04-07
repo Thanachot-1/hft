@@ -5,11 +5,11 @@ import { generateMockCandles, generateMockMarkers } from '@/lib/mockData';
 import { LayoutDashboard, Maximize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const TIMEFRAMES = ['1s', '1m', '5m', '15m', '1h', '4h'];
+const TIMEFRAMES = ['15s', '1m', '5m', '15m', '1h', '4h'];
 
 export function CenterPanel() {
   const [splitView, setSplitView] = useState(false);
-  const [timeframe, setTimeframe] = useState('1m');
+  const [timeframe, setTimeframe] = useState('15s');
 
   // Generate some stable mock data
   const chart1Data = useMemo(() => generateMockCandles(200, 850.50), []);

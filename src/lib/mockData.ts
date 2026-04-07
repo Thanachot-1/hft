@@ -14,10 +14,10 @@ export interface Marker {
   text: string;
 }
 
-export function generateMockCandles(count: number, startPrice: number, volatility: number = 0.002): Candle[] {
+export function generateMockCandles(count: number, startPrice: number, volatility: number = 0.0015): Candle[] {
   const candles: Candle[] = [];
   let currentPrice = startPrice;
-  let currentTime = Math.floor(Date.now() / 1000) - count * 60; // 1 minute intervals
+  let currentTime = Math.floor(Date.now() / 1000) - count * 15; // 15 second intervals
 
   for (let i = 0; i < count; i++) {
     const open = currentPrice;
@@ -35,7 +35,7 @@ export function generateMockCandles(count: number, startPrice: number, volatilit
     });
 
     currentPrice = close;
-    currentTime += 60;
+    currentTime += 15; // 15 seconds step
   }
 
   return candles;
@@ -44,14 +44,15 @@ export function generateMockCandles(count: number, startPrice: number, volatilit
 export function generateMockMarkers(candles: Candle[]): Marker[] {
   const markers: Marker[] = [];
   candles.forEach((candle, index) => {
-    if (index % 30 === 0 && index > 0) {
-      const isBuy = Math.random() > 0.5;
+    // High frequency markers, mostly shorts
+    if (index % 12 === 0 && index > 0) {
+      const isBuy = Math.random() > 0.85; // 85% chance to be a SHORT (SELL)
       markers.push({
         time: candle.time,
         position: isBuy ? 'belowBar' : 'aboveBar',
         color: isBuy ? '#0ECB81' : '#F6465D',
         shape: isBuy ? 'arrowUp' : 'arrowDown',
-        text: isBuy ? 'AI BUY' : 'AI SELL',
+        text: isBuy ? 'AI BUY' : 'AI SHORT',
       });
     }
   });
@@ -59,14 +60,14 @@ export function generateMockMarkers(candles: Candle[]): Marker[] {
 }
 
 export const mockWatchlist = [
-  { symbol: 'NVDA', price: 850.50, change: 2.4, confidence: 85, aiSignal: 'BUY' },
-  { symbol: 'TSLA', price: 175.20, change: -1.2, confidence: 62, aiSignal: 'HOLD' },
-  { symbol: 'SPY', price: 510.80, change: 0.6, confidence: 92, aiSignal: 'BUY' },
-  { symbol: 'QQQ', price: 440.10, change: 0.8, confidence: 45, aiSignal: 'SELL' },
+  { symbol: 'NVDA', price: 850.50, change: -2.4, confidence: 95, aiSignal: 'SHORT' },
+  { symbol: 'TSLA', price: 175.20, change: -4.2, confidence: 88, aiSignal: 'SHORT' },
+  { symbol: 'SPY', price: 510.80, change: -0.6, confidence: 72, aiSignal: 'SHORT' },
+  { symbol: 'QQQ', price: 440.10, change: -1.8, confidence: 85, aiSignal: 'SHORT' },
   { symbol: 'AAPL', price: 170.58, change: -0.4, confidence: 50, aiSignal: 'HOLD' },
-  { symbol: 'MSFT', price: 420.45, change: 1.1, confidence: 78, aiSignal: 'BUY' },
-  { symbol: 'AMD', price: 180.20, change: -2.5, confidence: 30, aiSignal: 'SELL' },
-  { symbol: 'META', price: 500.90, change: 4.2, confidence: 88, aiSignal: 'BUY' },
+  { symbol: 'MSFT', price: 420.45, change: 1.1, confidence: 40, aiSignal: 'HOLD' },
+  { symbol: 'AMD', price: 180.20, change: -3.5, confidence: 91, aiSignal: 'SHORT' },
+  { symbol: 'META', price: 500.90, change: -1.2, confidence: 68, aiSignal: 'SHORT' },
 ];
 
 export const mockPortfolio = [
@@ -77,14 +78,15 @@ export const mockPortfolio = [
 ];
 
 export const mockLogs = [
-  { id: 1, time: '09:30:22', type: 'INFO', message: 'AI Engine initialized. Model: Quant-v4.2 (Alpaca)' },
-  { id: 2, time: '09:30:25', type: 'TRADE', message: 'Executed BUY NVDA @ 850.00' },
-  { id: 3, time: '09:35:10', type: 'WARN', message: 'High volatility detected on TSLA' },
-  { id: 4, time: '09:40:05', type: 'TRADE', message: 'Executed SELL SPY @ 510.50' },
-  { id: 5, time: '09:45:30', type: 'INFO', message: 'Rebalancing portfolio weights' },
+  { id: 1, time: '09:30:00', type: 'INFO', message: 'HFT Engine initialized. Mode: 15s SHORT-BIAS' },
+  { id: 2, time: '09:30:15', type: 'TRADE', message: 'Executed SHORT NVDA @ 850.50 (Size: 100)' },
+  { id: 3, time: '09:30:30', type: 'TRADE', message: 'Executed SHORT TSLA @ 175.20 (Size: 500)' },
+  { id: 4, time: '09:30:45', type: 'INFO', message: 'Taking partial profits on NVDA (+0.15%)' },
+  { id: 5, time: '09:31:00', type: 'TRADE', message: 'Executed SHORT AMD @ 180.20 (Size: 300)' },
 ];
 
 export const mockOpenPositions = [
-  { id: 'pos_1', symbol: 'NVDA', type: 'LONG', entry: 850.00, size: 50, pnl: 25.00, pnlPercent: 0.05 },
-  { id: 'pos_2', symbol: 'TSLA', type: 'LONG', entry: 175.50, size: 100, pnl: -30.00, pnlPercent: -0.17 },
+  { id: 'pos_1', symbol: 'NVDA', type: 'SHORT', entry: 850.50, size: 100, pnl: 125.50, pnlPercent: 0.15 },
+  { id: 'pos_2', symbol: 'TSLA', type: 'SHORT', entry: 175.20, size: 500, pnl: 450.00, pnlPercent: 0.51 },
+  { id: 'pos_3', symbol: 'AMD', type: 'SHORT', entry: 180.20, size: 300, pnl: -45.00, pnlPercent: -0.08 },
 ];
