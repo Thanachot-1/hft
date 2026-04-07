@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-terminal-bg: #0B0E11;
+  --color-terminal-panel: #181A20;
+  --color-terminal-border: #2B3139;
+  --color-terminal-text: #EAECEF;
+  --color-terminal-muted: #848E9C;
+  --color-terminal-green: #0ECB81;
+  --color-terminal-red: #F6465D;
+}
+
+@layer base {
+  body {
+    @apply bg-terminal-bg text-terminal-text font-sans overflow-hidden;
+  }
+  
+  /* Custom Scrollbar for panels */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-terminal-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-terminal-muted;
+  }
+}
