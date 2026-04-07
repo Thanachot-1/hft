@@ -11,7 +11,7 @@ export function TopBar() {
       <div className="flex items-center space-x-6 overflow-hidden">
         <div className="flex items-center space-x-2 text-terminal-green font-mono font-bold shrink-0">
           <Activity size={18} />
-          <span>QUANT_TERMINAL_V4</span>
+          <span>HFT_TERMINAL_V4</span>
         </div>
         
         {/* Ticker Tape */}
@@ -33,7 +33,7 @@ export function TopBar() {
 
       {/* Demo / Live Toggle */}
       <div className="flex items-center space-x-3 shrink-0 ml-4">
-        <span className={cn("text-xs font-mono font-bold", !isLive ? "text-terminal-text" : "text-terminal-muted")}>DEMO</span>
+        <span className={cn("text-xs font-mono font-bold", !isLive ? "text-terminal-text" : "text-terminal-muted")}>PAPER</span>
         <button 
           onClick={() => setIsLive(!isLive)}
           className={cn(

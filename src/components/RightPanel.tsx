@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { PanelHeader, PanelContent } from './layout/TerminalGrid';
 import { mockPortfolio } from '@/lib/mockData';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { Settings, ShieldAlert } from 'lucide-react';
+import { Settings, ShieldAlert, Key } from 'lucide-react';
 
 export function RightPanel() {
   const [capital, setCapital] = useState('100000');
   const [risk, setRisk] = useState('2.0');
+  const [alpacaKey, setAlpacaKey] = useState('');
+  const [alpacaSecret, setAlpacaSecret] = useState('');
 
   return (
     <>
@@ -18,12 +20,44 @@ export function RightPanel() {
       </PanelHeader>
       
       <PanelContent className="flex flex-col gap-6">
+        {/* API Config */}
+        <div className="flex flex-col gap-4">
+          <h3 className="text-xs font-semibold text-terminal-muted uppercase tracking-wider flex items-center gap-2">
+            <Key size={14} />
+            Alpaca Authentication
+          </h3>
+          
+          <div className="flex flex-col gap-2">
+            <label className="text-xs text-terminal-muted font-mono">Alpaca API Key ID</label>
+            <input 
+              type="password" 
+              value={alpacaKey}
+              onChange={(e) => setAlpacaKey(e.target.value)}
+              placeholder="PK..."
+              className="w-full bg-terminal-bg border border-terminal-border rounded px-3 py-2 text-sm font-mono text-terminal-text focus:outline-none focus:border-terminal-green transition-colors"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-xs text-terminal-muted font-mono">Alpaca Secret Key</label>
+            <input 
+              type="password" 
+              value={alpacaSecret}
+              onChange={(e) => setAlpacaSecret(e.target.value)}
+              placeholder="SK..."
+              className="w-full bg-terminal-bg border border-terminal-border rounded px-3 py-2 text-sm font-mono text-terminal-text focus:outline-none focus:border-terminal-green transition-colors"
+            />
+          </div>
+        </div>
+
+        <div className="h-px bg-terminal-border w-full" />
+
         {/* Order Entry / Config */}
         <div className="flex flex-col gap-4">
           <h3 className="text-xs font-semibold text-terminal-muted uppercase tracking-wider">Risk Parameters</h3>
           
           <div className="flex flex-col gap-2">
-            <label className="text-xs text-terminal-muted font-mono">Max Total Capital (USDT)</label>
+            <label className="text-xs text-terminal-muted font-mono">Max Total Capital (USD)</label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-terminal-muted font-mono text-sm">$</span>
               <input 

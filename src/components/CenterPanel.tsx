@@ -12,10 +12,10 @@ export function CenterPanel() {
   const [timeframe, setTimeframe] = useState('1m');
 
   // Generate some stable mock data
-  const chart1Data = useMemo(() => generateMockCandles(200, 64200), []);
+  const chart1Data = useMemo(() => generateMockCandles(200, 850.50), []);
   const chart1Markers = useMemo(() => generateMockMarkers(chart1Data), [chart1Data]);
 
-  const chart2Data = useMemo(() => generateMockCandles(200, 3450), []);
+  const chart2Data = useMemo(() => generateMockCandles(200, 175.20), []);
   const chart2Markers = useMemo(() => generateMockMarkers(chart2Data), [chart2Data]);
 
   return (
@@ -23,8 +23,8 @@ export function CenterPanel() {
       <PanelHeader className="justify-between bg-terminal-panel">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 font-mono">
-            <span className="text-terminal-text font-bold">BTC/USDT</span>
-            <span className="text-terminal-green">64,230.50</span>
+            <span className="text-terminal-text font-bold">NVDA</span>
+            <span className="text-terminal-green">850.50</span>
           </div>
           
           <div className="h-4 w-px bg-terminal-border" />
@@ -68,11 +68,11 @@ export function CenterPanel() {
         {splitView ? (
           <div className="flex-1 flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-terminal-border">
             <div className="flex-1 flex flex-col relative">
-              <div className="absolute top-4 left-4 z-10 font-mono text-sm text-terminal-muted bg-terminal-bg/80 px-2 py-1 rounded">BTC/USDT</div>
+              <div className="absolute top-4 left-4 z-10 font-mono text-sm text-terminal-muted bg-terminal-bg/80 px-2 py-1 rounded">NVDA</div>
               <TradingChart data={chart1Data} markers={chart1Markers} />
             </div>
             <div className="flex-1 flex flex-col relative">
-              <div className="absolute top-4 left-4 z-10 font-mono text-sm text-terminal-muted bg-terminal-bg/80 px-2 py-1 rounded">ETH/USDT</div>
+              <div className="absolute top-4 left-4 z-10 font-mono text-sm text-terminal-muted bg-terminal-bg/80 px-2 py-1 rounded">TSLA</div>
               <TradingChart data={chart2Data} markers={chart2Markers} />
             </div>
           </div>
